@@ -1,0 +1,8 @@
+<h1> BIENVENIDO - ({{role}}) </h1>
+
+<div *ngFor="let todo of todos" class="alert alert-success mb-2" role="alert">
+  <h4 class="alert-heading">{{todo.title}}</h4>
+  <p>{{todo.description}}</p>
+  <hr>
+  <p class="mb-0">{{todo.dueDate}}</p>
+</div>

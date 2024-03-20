@@ -1,0 +1,82 @@
+<div class="card">
+  <div class="card-header">
+    <h5 class="card-title"> REGISTER </h5>
+  </div>
+
+  <form [formGroup]="formRegister" (ngSubmit)="send()">
+    <div class="card-body">
+      <div class="form-group">
+        <label for="ForInputNames"> Names </label>
+        <input class="form-control" id="ForInputNames" formControlName="names">
+        <div class="alert alert-danger mt-2" [hidden]="names.valid || names.pristine">
+          <span *ngIf="names.errors?.['required']">
+            Names Field is Required
+          </span>
+
+          <span *ngIf="names.errors?.['maxlength']">
+            Names 30 maximun size
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="ForInputLastNames"> LastNames </label>
+        <input class="form-control" id="ForInputLastNames" formControlName="lastNames">
+        <div class="alert alert-danger mt-2" [hidden]="lastNames.valid || lastNames.pristine">
+          <span *ngIf="lastNames.errors?.['required']">
+            LastNames Field is Required
+          </span>
+
+          <span *ngIf="lastNames.errors?.['maxlength']">
+            LastNames 30 maximun size
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="ForInputEmail"> Email </label>
+        <input class="form-control" id="ForInputEmail" formControlName="email">
+        <div class="alert alert-danger mt-2" [hidden]="email.valid || email.pristine">
+          <span *ngIf="email.errors?.['required']">
+            Email is Required
+          </span>
+
+          <span *ngIf="email.errors?.['email']">
+            Must be email
+          </span>
+
+          <span *ngIf="email.errors?.['maxlength']">
+            Email 60 maximun size
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="ForInputPassword">Password</label>
+        <input type="password" class="form-control" id="ForInputPassword" formControlName="password">
+          <div class="alert alert-danger mt-2" [hidden]="password.valid || password.pristine">
+            <span *ngIf="password.errors?.['required']">
+              Password is Required
+            </span>
+
+            <span *ngIf="password.errors?.['minlength']">
+              Password 7 minimun size
+            </span>
+
+            <span *ngIf="password.errors?.['maxlength']">
+              Password 30 maximun size
+            </span>
+          </div>
+      </div>
+
+      <div class="form-group">
+        <input type="hidden" class="form-control" id="ForInputRole" formControlName="role">
+      </div>
+    </div>
+
+    <div style="display: flex; justify-content: end;" class="card-footer">
+      <button type="submit" class="btn btn-primary"> SEND </button>
+    </div>
+  </form>
+
+</div>
