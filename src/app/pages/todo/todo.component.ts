@@ -17,7 +17,7 @@ export class TodoComponent implements OnInit {
   public todos: TodoDTO[] = [];
 
   constructor(private localstorageService: LocalstorageService, private todoService: TodoService){
-    let decoded = Object.values(jwtDecode(localstorageService.getItem() || ''));
+    let decoded = Object.values(jwtDecode(this.localstorageService.getItem() || ''));
     this.id = decoded[0];
     this.role = decoded[1];
   }
