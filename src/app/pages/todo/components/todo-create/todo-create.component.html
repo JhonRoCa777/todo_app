@@ -1,0 +1,29 @@
+<form (ngSubmit)="onSubmit()" class="p-3">
+  <div class="row mb-3">
+    <div class="col-12">
+      <label for="description" class="form-label">Descripción</label>
+      <input type="text" class="form-control" id="description"
+             [(ngModel)]="todoRequest.description" name="description">
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-6">
+      <label for="estado" class="form-label">Estado</label>
+      <select class="form-select" id="estado"
+              [(ngModel)]="todoRequest.estado" name="estado">
+        <option *ngFor="let e of estados" [ngValue]="e">{{ e | estadoEnumText }}</option>
+      </select>
+    </div>
+
+    <div class="col-6 d-flex align-items-end gap-2">
+      <button type="submit" class="btn w-50"
+              [ngClass]="todoRequest.id === undefined ? 'btn-success' : 'btn-warning'">
+        {{ todoRequest.id === undefined ? 'CREAR' : 'EDITAR' }}
+      </button>
+      <button *ngIf="todoRequest.id !== undefined" type="button" class="btn btn-secondary w-50" (click)="cancel()">
+            CANCELAR
+      </button>
+    </div>
+  </div>
+</form>

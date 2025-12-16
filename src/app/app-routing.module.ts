@@ -1,26 +1,30 @@
-import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { authGuard } from './guards/auth.guard';
+import { AuthGuard } from './guards/auth.guard';
+
+export const APP_ROUTES = {
+  AUTH: 'login',
+  HOME: 'home'
+}
 
 const routes: Routes = [
   {
-    path: 'auth',
+    path: APP_ROUTES.AUTH,
     loadChildren: () => import('./pages/auth/auth.module').then(m => m.AuthModule)
   },
   {
-    path: 'todo',
-    canActivate: [authGuard],
-    loadChildren: () => import('./pages/todo/todo.module').then(m => m.TodoModule)
+    path: APP_ROUTES.HOME,
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./pages/home/home.module').then(m => m.TodoModule)
   },
   {
     path: '**',
-    redirectTo: 'auth'
+    redirectTo: APP_ROUTES.AUTH
   }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes), HttpClientModule],
+  imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

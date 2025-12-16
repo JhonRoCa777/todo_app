@@ -1,33 +1,60 @@
-import { Component, OnInit } from '@angular/core';
-import { LocalstorageService } from '../../utils/localstorage.service';
-import { jwtDecode } from "jwt-decode";
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Todo } from '../../models/Todo';
 import { TodoService } from '../../services/todo.service';
-import { TodoDTO } from '../../models/Todo/TodoDTO';
+import { Subscription } from 'rxjs';
+import { TodoArrayStore } from '../../store/todo-array.store';
+import { TodoRequestStore } from '../../store/todo-request.store';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-todo',
   templateUrl: './todo.component.html',
   styleUrl: './todo.component.css'
 })
-export class TodoComponent implements OnInit {
+export class TodoComponent implements OnInit, OnDestroy {
 
-  private id: string;
-  public role: string;
+  private messageService = inject(MessageService);
+  private confirmationService = inject(ConfirmationService);
+  private todoService = inject(TodoService);
+  private todoArrayStore = inject(TodoArrayStore);
+  private todoRequestStore = inject(TodoRequestStore);
+  public todos: Todo[] = [];
+  private subscription: Subscription | undefined;
 
-  public todos: TodoDTO[] = [];
-
-  constructor(private localstorageService: LocalstorageService, private todoService: TodoService){
-    let decoded = Object.values(jwtDecode(this.localstorageService.getItem() || ''));
-    this.id = decoded[0];
-    this.role = decoded[1];
-  }
   ngOnInit(): void {
-    this.todoService.indexByUserId(this.id).subscribe(
-      response => {
-        this.todos = response.data;
-      },
-      error => {
-        alert("ERROR")
+    this.subscription = this.todoArrayStore.todos$.subscribe(
+      r => this.todos = r
+    );
+
+    this.todoService.index().subscribe(r => this.todoArrayStore.set(r));
+  }
+
+  ngOnDestroy(): void {
+    this.subscription?.unsubscribe();
+  }
+
+  edit(todo: Todo){
+    this.todoRequestStore.set({...todo});
+  }
+
+  confirmDelete(id: number){
+    this.confirmationService.confirm({
+      message: '¿Está seguro de eliminar este registro?',
+      header: 'Confirmar eliminación',
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Sí',
+      rejectLabel: 'No',
+
+      accept: () => this.delete(id)
     });
+  }
+
+  private delete(id: number){
+    this.todoService.delete(id).subscribe(
+      _ => {
+        this.messageService.add({severity: 'success', summary: 'Exito', detail: 'Todo Eliminado', life: 5000 });
+        this.todoService.index().subscribe(r => this.todoArrayStore.set(r))
+      }
+    );
   }
 }

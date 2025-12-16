@@ -1,10 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
-import { UserService } from '../../../../services/user.service';
-import { LocalstorageService } from '../../../../utils/localstorage.service';
+import { AuthService } from '../../../../services/auth.service';
 import { Router } from '@angular/router';
-import { UserRegisterDTO } from '../../../../models/User/UserRegisterDTO';
-import { ROUTES_PATH } from '../../../../constants/routesPath';
 
 @Component({
   selector: 'app-register',
@@ -14,7 +11,7 @@ import { ROUTES_PATH } from '../../../../constants/routesPath';
 export class RegisterComponent {
 
   constructor (private fb: FormBuilder,
-    private userService: UserService, private localstorageService: LocalstorageService,
+    private AuthService: AuthService,
     private router: Router){}
 
     formRegister = this.fb.group({
@@ -31,16 +28,16 @@ export class RegisterComponent {
     get password(){ return this.formRegister.get('password') as FormControl; }
 
     send(){
-      this.userService.register(this.formRegister.value as UserRegisterDTO).subscribe(
-        response => {
-          if(response.status != "200") alert(response.message[0]);
-          else {
-            this.formRegister.reset();
-            alert("Ya puedes iniciar sesion");
-          }
-        },
-        error => {
-          alert("ERROR")
-      });
+      // this.AuthService.register(this.formRegister.value as UserRegisterDTO).subscribe(
+      //   response => {
+      //     if(response.status != "200") alert(response.message[0]);
+      //     else {
+      //       this.formRegister.reset();
+      //       alert("Ya puedes iniciar sesion");
+      //     }
+      //   },
+      //   error => {
+      //     alert("ERROR")
+      // });
     }
 }

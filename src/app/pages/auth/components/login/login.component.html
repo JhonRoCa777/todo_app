@@ -10,15 +10,15 @@
         <input class="form-control" id="ForInputEmailLogin" formControlName="email">
         <div class="alert alert-danger mt-2" [hidden]="email.valid || email.pristine">
           <span *ngIf="email.errors?.['required']">
-            Email is Required
+            Campo requerido
           </span>
 
           <span *ngIf="email.errors?.['email']">
-            Must be email
+            Email no válido
           </span>
 
           <span *ngIf="email.errors?.['maxlength']">
-            Email 60 maximun size
+            Máximo 255 caracteres
           </span>
         </div>
       </div>
@@ -28,22 +28,22 @@
         <input type="password" class="form-control" id="ForInputPasswordLogin" formControlName="password">
           <div class="alert alert-danger mt-2" [hidden]="password.valid || password.pristine">
             <span *ngIf="password.errors?.['required']">
-              Password is Required
+              Campo requerido
             </span>
 
             <span *ngIf="password.errors?.['minlength']">
-              Password 7 minimun size
+              Mínimo 8 caracteres
             </span>
 
             <span *ngIf="password.errors?.['maxlength']">
-              Password 30 maximun size
+              Máximo 30 caracteres
             </span>
           </div>
       </div>
     </div>
 
     <div style="display: flex; justify-content: end;" class="card-footer">
-      <button type="submit" class="btn btn-primary" [disabled]="formLogin.invalid">LOGIN</button>
+      <button type="submit" class="btn btn-primary" [disabled]="formLogin.invalid">log-in</button>
     </div>
   </form>
 

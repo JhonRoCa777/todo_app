@@ -1,0 +1,25 @@
+<div class="row g-3">
+
+  <div class="col-12 col-md-4">
+    <div class="card text-center border-primary">
+      <div class="card-body">
+        <h5 class="card-title"> TOTAL </h5>
+        <p class="card-text fs-3 fw-bold">
+          {{ totalAmount() }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-md-4" *ngFor="let g of todoGroup()">
+    <div class="card text-center">
+      <div class="card-body">
+        <h5 class="card-title">{{ g.label }}</h5>
+        <p class="card-text fs-3 fw-bold">
+          {{ g.amount }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+</div>

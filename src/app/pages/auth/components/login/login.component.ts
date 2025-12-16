@@ -1,10 +1,9 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { UserService } from '../../../../services/user.service';
-import { UserCredentialsDTO } from '../../../../models/User/UserCredentialsDTO';
-import { LocalstorageService } from '../../../../utils/localstorage.service';
+import { Component, inject } from '@angular/core';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ROUTES_PATH } from '../../../../constants/routesPath';
+import { AuthService } from '../../../../services/auth.service';
+import { UserLogin } from '../../../../models/User';
+import { APP_ROUTES } from '../../../../app-routing.module';
 
 @Component({
   selector: 'app-login',
@@ -13,30 +12,21 @@ import { ROUTES_PATH } from '../../../../constants/routesPath';
 })
 export class LoginComponent {
 
-  constructor (private fb: FormBuilder,
-    private userService: UserService, private localstorageService: LocalstorageService,
-    private router: Router){}
+  private fb = inject(FormBuilder);
+  private router = inject(Router);
+  private authService = inject(AuthService);
 
   formLogin = this.fb.group({
-    'email': ['', [Validators.required, Validators.email, Validators.maxLength(60)]],
-    'password': ['', [Validators.required, Validators.minLength(7), Validators.maxLength(30)]]
+    'email': ['', [Validators.required, Validators.maxLength(255), Validators.email]],
+    'password': ['', [Validators.required, Validators.minLength(8), Validators.maxLength(30)]]
   });
 
   get email(){ return this.formLogin.get('email') as FormControl; }
   get password(){ return this.formLogin.get('password') as FormControl; }
 
   send(){
-    this.userService.login(this.formLogin.value as UserCredentialsDTO).subscribe(
-      response => {
-        if(response.status != "200") alert(response.message[0]);
-        else {
-          this.localstorageService.setItem(response.data);
-          this.router.navigate([ROUTES_PATH.todo]);
-          alert(response.message[0]);
-        }
-      },
-      error => {
-        alert("ERROR")
-    });
+    this.authService.login(this.formLogin.value as UserLogin).subscribe(
+      response => this.router.navigate([APP_ROUTES.HOME])
+    );
   }
 }

@@ -1,8 +1,27 @@
-<h1> BIENVENIDO - ({{role}}) </h1>
+<app-todo-create></app-todo-create>
 
-<div *ngFor="let todo of todos" class="alert alert-success mb-2" role="alert">
-  <h4 class="alert-heading">{{todo.title}}</h4>
-  <p>{{todo.description}}</p>
-  <hr>
-  <p class="mb-0">{{todo.dueDate}}</p>
-</div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th class="text-center">Descripción</th>
+      <th class="text-center">Fecha Creado</th>
+      <th class="text-center">Estado</th>
+      <th class="text-center">Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let todo of todos">
+      <td class="text-center">{{todo.description}}</td>
+      <td class="text-center">{{todo.created_At}}</td>
+      <td class="text-center">{{todo.estado | estadoEnumText }}</td>
+      <td class="d-flex justify-content-center gap-2">
+        <button class="btn btn-warning btn-sm" (click)="edit(todo)">
+          <i class="pi pi-pencil"></i>
+        </button>
+        <button class="btn btn-danger btn-sm" (click)="confirmDelete((todo.id))">
+          <i class="pi pi-trash"></i>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
